@@ -1,5 +1,6 @@
 import js
-from pyodide.ffi import to_js
+import pyodide
+#from pyodide.ffi import to_js
 
 TEMPLATE = """
 <div class="reveal">
@@ -13,6 +14,12 @@ TEMPLATE = """
 </div>
 """
 
+def list_to_js(lst):
+    res = js.Array()
+    for item in lst:
+        res.push(item)
+    return res
+
 def show(filename):
     with open(filename) as f:
         content = f.read()
@@ -21,5 +28,5 @@ def show(filename):
     js.document.body.insertAdjacentHTML("beforeend", slides)
 
     options = js.Object()
-    options.plugins = to_js([js.RevealMarkdown])
+    options.plugins = list_to_js([js.RevealMarkdown])
     js.Reveal.initialize(options)
